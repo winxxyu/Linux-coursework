@@ -17,28 +17,28 @@ if [ "$action" = "repair" ]; then
 
     # --- 任务 A1：定位并记录目标采集器进程信息 ---
     # 利用 ps 配合 grep 精准定位包含 TARGET_TOKEN 且排除 grep 自身的进程行
-    target_line=$(ps aux | grep "[T]$TARGET_TOKEN" || true)
+    # 利用 process.env 中的 TARGET_PID 精准过滤出目标进程行
+target_line=$(ps aux | awk -v pid="$TARGET_PID" '$2 == pid' || true)
 
-    if [ -n "$target_line" ]; then
-        # 提取字段：pid 为第2列，user 为第1列，state 为第8列
-        t_pid=$(echo "$target_line" | awk '{print $2}')
-        t_user=$(echo "$target_line" | awk '{print $1}')
-        t_state=$(echo "$target_line" | awk '{print $8}')
-        t_cmd=$(echo "$target_line" | cut -d' ' -f11-)
-    else
-        t_pid="UNKNOWN"
-        t_user="UNKNOWN"
-        t_state="UNKNOWN"
-        t_cmd="UNKNOWN"
-    fi
+if [ -n "$target_line" ]; then
+    t_pid=$(echo "$target_line" | awk '{print $2}')
+    t_user=$(echo "$target_line" | awk '{print $1}')
+    t_state=$(echo "$target_line" | awk '{print $8}')
+    t_cmd=$(echo "$target_line" | cut -d' ' -f11-)
+else
+    t_pid="${TARGET_PID:-UNKNOWN}"
+    t_user="UNKNOWN"
+    t_state="UNKNOWN"
+    t_cmd="UNKNOWN"
+fi
 
-    # 写入 process.txt
-    cat << EOF > "$output/process.txt"
+cat << EOF > "$output/process.txt"
 pid=$t_pid
 user=$t_user
 state=$t_state
 command=$t_cmd
 EOF
+
 
     # --- 任务 A2：保存至少两条目标采集器的 TICK 日志 ---
     tail -n 2 "$WORKER_LOG" > "$output/collector-sample.log" || true
