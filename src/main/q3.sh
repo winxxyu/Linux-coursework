@@ -6,17 +6,19 @@ input=${1:?需要输入目录}
 output=${2:?需要输出目录}
 
 # TODO：删除下方提示和 exit 77，再填写你的命令。
-mkdir -p "$output/sentry_ws"
 mkdir -p "$output/sentry_ws/scripts"
 mkdir -p "$output/sentry_ws/config"
 mkdir -p "$output/sentry_ws/backup"
 mkdir -p "$output/sentry_ws/archive"
-cp -r "$input"/* "$output/sentry_ws"
+cp -r "$input"/* "$output/sentry_ws/"
+mv "$output/sentry_ws/hello.sh" "$output/sentry_ws/scripts/"
+mv "$output/sentry_ws/robot.conf" "$output/sentry_ws/config/"
+mv "$output/sentry_ws/draft.conf" "$output/sentry_ws/config/"
 cp "$output/sentry_ws/config/robot.conf" "$output/sentry_ws/backup/robot.conf"
 mv "$output/sentry_ws/config/draft.conf" "$output/sentry_ws/archive/draft.conf.old"
 rm -rf "$output/sentry_ws/tmp"
 chmod 750 "$output/sentry_ws/scripts/hello.sh"
 chmod 640 "$output/sentry_ws/config/robot.conf"
-"$output/sentry_ws/scripts/hello.sh" > "$output/sentry_ws/hello-output.txt"
+"$output/sentry_ws/scripts/hello.sh" > "$output/hello-output.txt"
 
 

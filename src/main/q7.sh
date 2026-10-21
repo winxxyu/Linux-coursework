@@ -11,11 +11,11 @@ mkdir -p "$output"
 source "$input/remote.env"
 cat << EOF > "$output/ssh_config"
 Host aim-sentry
-    HostName $HOST
-    Port $PORT
-    User $REMOTE_USER
-    IdentityFile $KEY_PATH
-    UserKnownHostsFile $KNOWN_HOSTS
+    HostName "$HOST"
+    Port "$PORT"
+    User "$REMOTE_USER"
+    IdentityFile "$KEY_PATH"
+    UserKnownHostsFile "$KNOWN_HOSTS"
     IdentitiesOnly yes
     StrictHostKeyChecking yes
     BatchMode yes
