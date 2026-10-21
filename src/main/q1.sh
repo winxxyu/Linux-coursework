@@ -6,5 +6,10 @@ input=${1:?需要输入目录}
 output=${2:?需要输出目录}
 
 # TODO：删除下方提示和 exit 77，再填写你的命令。
-printf '%s\n' 'Q1 尚未实现' >&2
-exit 77
+mkdir -p "$output_dir"
+handover="$input_dir/handover"
+realpath "$handover" > "$output_dir/location.txt"
+cat "$handover/.robot-id" > "$output_dir/robot-id.txt"
+cat "$input_dir/notes/welcome.txt" > "$output_dir/welcome.txt"
+
+

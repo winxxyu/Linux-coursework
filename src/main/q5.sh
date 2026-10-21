@@ -6,5 +6,27 @@ input=${1:?需要输入目录}
 output=${2:?需要输出目录}
 
 # TODO：删除下方提示和 exit 77，再填写你的命令。
-printf '%s\n' 'Q5 尚未实现' >&2
-exit 77
+source $input/launch.env
+bash $LAUNCH_TOOL $MODEL_PATH $CAMERA_PATH > $output/stdout.log 2> $output/stderr.log || true
+exit_code=$?
+printf '%s\n' $exit_code > $output/exit-code.txt
+if [ "$exit_code" -eq 0 ]; then
+    result="SUCCESS"
+    reason="NONE"
+elif [ "$exit_code" -eq 10 ]; then
+    result="FAILED"
+    reason="MODEL_MISSING"
+elif [ "$exit_code" -eq 20 ]; then
+    result="FAILED"
+    reason="CAMERA_DENIED"
+else
+    result="FAILED"
+    reason="UNKNOWN"
+fi
+cat << EOF > "$output/report.txt"
+result=$result
+exit_code=$exit_code
+reason=$reason
+EOF
+
+
