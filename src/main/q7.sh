@@ -6,10 +6,10 @@ input=${1:?需要输入目录}
 output=${2:?需要输出目录}
 
 # TODO：删除下方提示和 exit 77，再填写你的命令。
-source $input/remote.env
-mkdir -p $output/ssh_config
-chmod 600 $output/ssh_config
-cat << EOF > $output/ssh_config
+source "$input/remote.env"
+mkdir -p "$output/ssh_config"
+chmod 600 "$output/ssh_config"
+cat << EOF > "$output/ssh_config"
 Host aim-sentry
     HostName $HOST
     Port $PORT
@@ -20,6 +20,6 @@ Host aim-sentry
     StrictHostKeyChecking yes
     BatchMode yes
 EOF
-ssh -F $output/ssh_config aim-sentry whoami > $output/remote-user.txt
-mkdir -p $output/received
-scp -F $output/ssh_config aim-sentry:$REMOTE_LOG $output/received/errors.log
+ssh -F "$output/ssh_config aim-sentry whoami" > "$output/remote-user.txt"
+mkdir -p "$output/received"
+scp -F "$output/ssh_config aim-sentry":"$REMOTE_LOG" "$output/received/errors.log"

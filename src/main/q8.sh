@@ -76,7 +76,7 @@ EOF
 
     # --- 任务 B3：使用教师启动工具运行修复后的服务 ---
     mkdir -p "$output/service/pid"
-    bash "$START_TOOL" "$output/server.conf" "$output/service" >/dev/null 2>&1
+    bash "$START_TOOL" "$output/server.conf" "$output/service" >/dev/null 2>&1 || true
 
     # --- 任务 B4：有界重试等待服务就绪，并通过 curl 检查状态 ---
     # 最多尝试 10 次，每次间隔 1 秒
