@@ -10,6 +10,6 @@ mkdir -p "$output/sysroot"
 dpkg --root="$output/sysroot" \
      --force-not-root \
      --log=/dev/null \
-     -i "$input/*.deb"
+     -i "$input"/*.deb
 "$output/sysroot/usr/bin/aim-sentry-info" > "$output/tool-output.txt"
 

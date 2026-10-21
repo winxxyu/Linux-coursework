@@ -7,7 +7,7 @@ output=${2:?需要输出目录}
 
 # TODO：删除下方提示和 exit 77，再填写你的命令。
 source "$input/remote.env"
-mkdir -p "$output/ssh_config"
+mkdir -p "$output"
 chmod 600 "$output/ssh_config"
 cat << EOF > "$output/ssh_config"
 Host aim-sentry
